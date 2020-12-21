@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg navbar-dark"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+     style="background-color:#7400b8;">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{'/'}"><i class="fab fa-atlassian mr-2"></i> ALL E-SHOP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" th:text="#{navbar.languages}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="?l=en" th:text="#{navbar.en}"></a>
+                        <a class="dropdown-item" href="?l=ru" th:text="#{navbar.ru}"></a>
+                        <a class="dropdown-item" href="?l=kz" th:text="#{navbar.kz}"></a>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{'/basket'}">
+                        <i class="fas fa-shopping-basket mr-1"></i>
+                        <span th:text="#{label.basket}"></span>
+                        <span id="basketAmount"></span>
+                    </a>
+                </li>
+                <li class="nav-item active" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{'/profile'}" th:text="#{label.profile}"></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">
+                    <a class="nav-link text-warning" th:href="@{'/admin'}" th:text="#{label.adminPanel}"></a>
+                </li>
+                <li class="nav-item active" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{'/login'}" th:text="#{navbar.login}"></a>
+                </li>
+                <li class="nav-item active" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="javascript:void(0)" onclick="document.getElementById('logout-form').submit()" th:text="#{navbar.logout}"></a>
+                </li>
+                <form th:action="@{'/logout'}" method="post" id="logout-form" sec:authorize="isAuthenticated()"></form>
+            </ul>
+        </div>
+    </div>
+</nav>

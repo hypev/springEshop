@@ -1,0 +1,97 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/admin_wrapper.html">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <h2 th:text="#{aside.allItems}"></h2>
+        <button type="button" class="btn text-white" data-toggle="modal" data-target="#add" style="background-color:#7400b8;">
+            <i class="fas fa-plus mr-2w"></i>
+            <span th:text="#{btn.add}"></span>
+        </button>
+    </div>
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col" th:text="#{label.name}"></th>
+            <th scope="col" th:text="#{label.brand}"></th>
+            <th scope="col" th:text="#{label.price}"></th>
+            <th scope="col" th:text="#{btn.details}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="i : ${items}">
+            <td th:text="${i.id}"></td>
+            <td th:text="${i.name}"></td>
+            <td th:text="${i.brand.name + ', ' + i.brand.country.code}"></td>
+            <td th:text="${i.price + '$'}"></td>
+            <td>
+                <a th:href="${'item/' + i.id}" class="btn text-white" style="background-color:#7400b8;">
+                    <i class="fas fa-info-circle"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" th:text="#{btn.add}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="${'add_item'}" method="post" id="addForm">
+                        <div class="form-group">
+                            <label for="nameInput" th:text="#{label.name}"></label>
+                            <input name="name" type="text" id="nameInput" required class="form-control" th:placeholder="#{label.name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="descriptionInput" th:text="#{label.description}"></label>
+                            <textarea name="description" id="descriptionInput" cols="30" rows="2" class="form-control" th:placeholder="#{label.description}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="priceInput" th:text="#{label.price}"></label>
+                            <input type="number" name="price" id="priceInput" required class="form-control" th:placeholder="#{label.price}">
+                        </div>
+                        <div class="form-group">
+                            <label for="starsInput" th:text="#{label.rating}"></label>
+                            <input type="number" min="0" max="5" name="stars" required class="form-control" id="starsInput" th:placeholder="#{label.rating}">
+                        </div>
+                        <div class="form-group">
+                            <label for="brandInput" th:text="#{label.brand}"></label>
+                            <select name="brand" id="brandInput" required class="form-control">
+                                <option disabled selected th:text="#{label.brand}"></option>
+                                <option th:each="b : ${brands}" th:text="${b.name + ', ' + b.country.code}" th:value="${b.id}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="smallPicUrl" th:text="#{label.smallPicUrl}"></label>
+                            <input type="url" name="smallPicUrl" th:placeholder="#{label.smallPicUrl}" id="smallPicUrl" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="largePicUrl" th:text="#{label.largePicUrl}"></label>
+                            <input type="url" name="largePicUrl" th:placeholder="#{label.largePicUrl}" id="largePicUrl" class="form-control">
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" id="inTopPageInput" name="inTopPage" class="form-check-input">
+                            <label for="inTopPageInput" th:text="#{label.inTopPage}" class="form-check-label"></label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{btn.close}"></button>
+                    <button class="btn btn-success" form="addForm">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span th:text="#{btn.add}"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

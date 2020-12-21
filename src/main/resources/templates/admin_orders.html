@@ -1,0 +1,30 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/admin_wrapper.html">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <h2 th:text="#{aside.orders}"></h2>
+    </div>
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col" th:text="#{label.fullname}"></th>
+            <th scope="col" th:text="#{aside.allItems}"></th>
+            <th scope="col" th:text="#{label.total}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${orders}">
+            <td scope="row" th:text="${o.id}"></td>
+            <td th:text="${o.fullname}"></td>
+            <td th:text="${o.totalItems()}"></td>
+            <td class="font-weight-bold">
+                $<span th:text="${o.totalSum()}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

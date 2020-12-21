@@ -1,0 +1,134 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/admin_wrapper.html">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <h2 th:text="#{label.country}"></h2>
+        <button type="button" class="btn text-white" data-toggle="modal" data-target="#add" style="background-color:#7400b8;">
+            <i class="fas fa-plus mr-2w"></i>
+            <span th:text="#{btn.add}"></span>
+        </button>
+    </div>
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col" th:text="#{label.name}"></th>
+            <th scope="col" th:text="#{label.code}"></th>
+            <th scope="col" th:text="#{btn.edit}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${countries}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.code}"></td>
+            <td>
+                <button th:attr="onclick=|fill('${c.id}', '${c.name}', '${c.code}')|" class="btn text-white" data-toggle="modal" data-target="#edit" style="background-color:#7400b8;">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" th:text="#{btn.add}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="${'add_country'}" method="post" id="addForm">
+                        <div class="form-group">
+                            <label for="nameInput" th:text="#{label.name}"></label>
+                            <input name="name" type="text" id="nameInput" required class="form-control" th:placeholder="#{label.name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="codeInput" th:text="#{label.code}"></label>
+                            <input name="code" type="text" id="codeInput" required class="form-control" th:placeholder="#{label.code}">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{btn.close}"></button>
+                    <button class="btn btn-success" form="addForm">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span th:text="#{btn.add}"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{btn.edit}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="${'edit_country'}" method="post" id="editForm">
+                        <input type="hidden" name="id" id="idEdit">
+                        <div class="form-group">
+                            <label for="nameEditInput" th:text="#{label.name}"></label>
+                            <input name="name" type="text" id="nameEditInput" required class="form-control" th:placeholder="#{label.name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="codeEditInput" th:text="#{label.code}"></label>
+                            <input name="code" type="text" id="codeEditInput" required class="form-control" th:placeholder="#{label.code}">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{btn.close}"></button>
+                    <button class="btn btn-success" form="editForm">
+                        <i class="fas fa-save mr-2"></i>
+                        <span th:text="#{btn.edit}"></span>
+                    </button>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#delete">
+                        <i class="fas fa-trash-alt mr-2"></i>
+                        <span th:text="#{btn.delete}"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{label.sure}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="${'delete_country'}" style="display:none;" method="post" id="deleteForm">
+                    <input type="hidden" name="id" id="idDelete">
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{btn.close}"></button>
+                    <button class="btn btn-danger" form="deleteForm">
+                        <i class="fas fa-trash-alt mr-2"></i>
+                        <span th:text="#{btn.delete}"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fill(id, name, code) {
+            $("#idEdit").val(id);
+            $("#idDelete").val(id);
+            $("#nameEditInput").val(name);
+            $("#codeEditInput").val(code);
+        }
+    </script>
+</div>

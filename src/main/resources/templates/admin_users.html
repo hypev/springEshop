@@ -1,0 +1,74 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/admin_wrapper.html">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <h2 th:text="#{aside.users}"></h2>
+        <button type="button" class="btn text-white" data-toggle="modal" data-target="#add" style="background-color:#7400b8;">
+            <i class="fas fa-plus mr-2w"></i>
+            <span th:text="#{btn.add}"></span>
+        </button>
+    </div>
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col" th:text="#{label.email}"></th>
+            <th scope="col" th:text="#{label.fullname}"></th>
+            <th scope="col" th:text="#{aside.roles}"></th>
+            <th scope="col" th:text="#{btn.details}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${users}">
+            <td th:text="${u.id}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.fullname}"></td>
+            <td th:text="${u.stringRoles()}"></td>
+            <td>
+                <a th:href="${'user/' + u.id}" class="btn text-white" style="background-color:#7400b8;">
+                    <i class="fas fa-info-circle"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" th:text="#{btn.add}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="${'add_user'}" method="post" id="addForm">
+                        <div class="form-group">
+                            <label for="name" th:text="#{label.name}"></label>
+                            <input type="text" name="fullname" id="name" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" th:text="#{label.email}"></label>
+                            <input type="email" name="email" id="email" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" th:text="#{label.password}"></label>
+                            <input type="password" name="password" id="password" required class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{btn.close}"></button>
+                    <button class="btn btn-success" form="addForm">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span th:text="#{btn.add}"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,67 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/admin_wrapper.html">
+
+    <h2 th:text="${user.fullname}"></h2>
+    <form th:action="${'../edit_user'}" method="post" id="addForm">
+        <input type="hidden" name="id" th:value="${user.id}">
+        <div class="form-group">
+            <label for="emailInput" th:text="#{label.email}"></label>
+            <input th:value="${user.email}" type="email" id="emailInput" class="form-control" th:placeholder="#{label.email}" disabled>
+        </div>
+        <div class="form-group">
+            <label for="nameInput" th:text="#{label.name}"></label>
+            <input th:value="${user.fullname}" name="fullname" type="text" id="nameInput" required class="form-control" th:placeholder="#{label.name}">
+        </div>
+        <button class="btn btn-success" type="submit">
+            <i class="fas fa-save mr-2"></i>
+            <span th:text="#{btn.save}"></span>
+        </button>
+        <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete">
+            <i class="fas fa-trash-alt mr-2"></i>
+            <span th:text="#{btn.delete}"></span>
+        </button>
+    </form>
+
+    <h2 th:text="#{aside.roles}" class="mt-3"></h2>
+    <table class="table">
+        <tr th:each="r : ${roles}">
+            <td th:text="${r.role}"></td>
+            <td th:text="${r.description}"></td>
+            <td>
+                <form th:action="${'../add_user_role'}" class="mb-0" method="post">
+                    <input type="hidden" name="user_id" th:value="${user.id}">
+                    <input type="hidden" name="role_id" th:value="${r.id}">
+                    <button th:class="${user.roles.contains(r) ? 'btn btn-danger' : 'btn btn-success'}">
+                        <i th:class="${user.roles.contains(r) ? 'fas fa-minus' : 'fas fa-plus'}"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" th:text="#{label.sure}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="${'../delete_user'}" method="post" id="deleteForm" style="display: none">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{btn.close}"></button>
+                    <button type="submit" form="deleteForm" class="btn btn-danger">
+                        <i class="fas fa-trash-alt mr-2"></i>
+                        <span th:text="#{btn.delete}"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

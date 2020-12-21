@@ -1,0 +1,110 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/wrapper.html">
+
+    <div class="col-3 d-flex flex-column flex-wrap">
+        <div class="card">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.categories}">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-primary font-weight-bold">
+                    <a th:href="@{'/all'}">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        <span th:text="#{aside.allItems}"></span>
+                    </a>
+                </li>
+                <li class="list-group-item text-primary font-weight-bold" th:each="c : ${categories}">
+                    <a th:href="@{'/search/?c=' + ${c.id}}">
+                        <i th:class="${'mr-2 ' + c.faClass}"></i>
+                        <span th:text="${c.name}"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.brands}">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-primary font-weight-bold" th:each="b : ${brands}">
+                    <a th:href="@{'/search/?b=' + ${b.id}}">
+                        <span th:text="${b.name}"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.payments}">
+            </div>
+            <div class="card-body d-flex flex-wrap align-items-center justify-content-between" style="font-size: 50px; color: #7400b8">
+                <i class="fab fa-cc-apple-pay"></i>
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fab fa-cc-amazon-pay"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-9 d-flex justify-content-start align-items-center flex-column">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error != null}">
+            <span th:text="#{label.updateProfileError}" th:if="${error.equals('Profile')}"></span>
+            <span th:text="#{label.reTypeError}" th:if="${error.equals('Retype')}"></span>
+            <span th:text="#{label.oldPasswordError}" th:if="${error.equals('OldPassword')}"></span>
+            <span th:text="#{label.avatarUpdateError}" th:if="${error.equals('Avatar')}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success != null}">
+            <span th:text="#{label.profileUpdateSuccess}" th:if="${success.equals('Profile')}"></span>
+            <span th:text="#{label.passwordUpdateSuccess}" th:if="${success.equals('Password')}"></span>
+            <span th:text="#{label.avatarUpdateSuccess}" th:if="${success.equals('Avatar')}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="w-50 mb-3">
+            <img class="w-100" style="border-radius: 20px" th:src="${'/view/pictures/' + user.getPictureUrl()}" alt="Avatar">
+        </div>
+        <form th:action="@{'/profile/update-avatar'}" method="post" class="w-50" enctype="multipart/form-data">
+            <div class="custom-file mb-3">
+                <input name="avatar" type="file" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile" th:text="#{label.browse}"></label>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success float-right" th:text="#{label.updateAvatar}"></button>
+            </div>
+        </form>
+        <form th:action="@{'/profile/update'}" method="post" class="w-50">
+            <div class="form-group">
+                <label for="email" th:text="#{label.email}"></label>
+                <input id="email" type="email" class="form-control" disabled th:value="${user.getEmail()}">
+            </div>
+            <div class="form-group">
+                <label for="fullname" th:text="#{label.fullname}"></label>
+                <input id="fullname" type="text" name="fullname" class="form-control" required th:value="${user.getFullname()}">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success float-right" th:text="#{label.updateProfile}"></button>
+            </div>
+        </form>
+        <form th:action="@{'/profile/update-password'}" method="post" class="w-50">
+            <div class="form-group">
+                <label for="oldPassword" th:text="#{label.oldPassword}"></label>
+                <input id="oldPassword" type="password" name="oldPassword" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password" th:text="#{label.password}"></label>
+                <input id="password" type="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="rePassword" th:text="#{label.rePassword}"></label>
+                <input id="rePassword" type="password" name="rePassword" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success float-right" th:text="#{label.updatePassword}"></button>
+            </div>
+        </form>
+    </div>
+</div>

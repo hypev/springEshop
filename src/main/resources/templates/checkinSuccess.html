@@ -1,0 +1,52 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/wrapper.html"
+     xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+
+    <div class="col-3 d-flex flex-column flex-wrap">
+        <div class="card">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.categories}">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-primary font-weight-bold">
+                    <a th:href="@{'/all'}">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        <span th:text="#{aside.allItems}"></span>
+                    </a>
+                </li>
+                <li class="list-group-item text-primary font-weight-bold" th:each="c : ${categories}">
+                    <i th:class="${'mr-2 ' + c.faClass}"></i>
+                    <span th:text="${c.name}"></span>
+                </li>
+            </ul>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.brands}">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-primary font-weight-bold" th:each="b : ${brands}">
+                    <a th:href="@{'/search/?b=' + ${b.id}}">
+                        <span th:text="${b.name}"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.payments}">
+            </div>
+            <div class="card-body d-flex flex-wrap align-items-center justify-content-between" style="font-size: 50px; color: #7400b8">
+                <i class="fab fa-cc-apple-pay"></i>
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fab fa-cc-amazon-pay"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <h1 class="text-success text-center mt-5" th:text="#{label.checkinSuccess}"></h1>
+        <h6 class="text-center"><a href="/" class="text-primary" th:text="#{label.continueShopping}"></a></h6>
+    </div>
+</div>

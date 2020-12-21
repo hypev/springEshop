@@ -1,0 +1,78 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+     layout:fragment="content"
+     layout:decorate="layout/wrapper.html">
+
+    <div class="col-3 d-flex flex-column flex-wrap">
+        <div class="card">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.categories}">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-primary font-weight-bold">
+                    <a th:href="@{'/all'}">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        <span th:text="#{aside.allItems}"></span>
+                    </a>
+                </li>
+                <li class="list-group-item text-primary font-weight-bold" th:each="c : ${categories}">
+                    <a th:href="@{'/search/?c=' + ${c.id}}">
+                        <i th:class="${'mr-2 ' + c.faClass}"></i>
+                        <span th:text="${c.name}"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.brands}">
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-primary font-weight-bold" th:each="b : ${brands}">
+                    <a th:href="@{'/search/?b=' + ${b.id}}">
+                        <span th:text="${b.name}"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header font-weight-bold text-white" style="background-color:#7400b8;" th:text="#{aside.payments}">
+            </div>
+            <div class="card-body d-flex flex-wrap align-items-center justify-content-between" style="font-size: 50px; color: #7400b8">
+                <i class="fab fa-cc-apple-pay"></i>
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fab fa-cc-amazon-pay"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-9 d-flex justify-content-start align-items-center flex-column">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
+            <span th:text="#{label.loginError}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success != null}">
+            <span th:text="#{label.registrationSuccess}" th:if="${success.equals('Register')}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form th:action="@{'/login'}" method="post" class="w-50" id="login">
+            <div class="form-group">
+                <label for="email" th:text="#{label.email}"></label>
+                <input id="email" type="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password" th:text="#{label.password}"></label>
+                <input id="password" type="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <span th:text="#{label.notRegistered}"></span>
+                <a th:href="@{'/register'}" th:text="#{label.here}"></a>
+                <button form="login" class="btn btn-success float-right" th:text="#{navbar.login}"></button>
+            </div>
+        </form>
+    </div>
+</div>
